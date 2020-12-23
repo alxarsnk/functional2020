@@ -91,6 +91,18 @@ prob23 str = parse str
                      let rightM =  read $ takeWhile (/= ':') $ tail $ dropWhile (/= '-') input
                      let parseStr = tail $ dropWhile (/= ' ') input
                      result leftN rightM parseStr
+                   
+                                  
+                                  
+result :: Int -> Int -> String -> Maybe String
+result leftN rightM parseString 
+  | leftN > (length parseString)  || rightM > (length parseString) = Nothing
+  | leftN > rightM = (Just (reverseStr (take leftN  $ drop (rightM - 1) parseString)))
+  | otherwise = (Just (take rightM  $ drop (leftN - 1) parseString))
+
+
+reverseStr :: [a] -> [a]  
+reverseStr = foldl (\acc x -> x : acc) [] 
 
 ------------------------------------------------------------
 -- PROBLEM #24
