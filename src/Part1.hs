@@ -91,4 +91,13 @@ prob4iter i a b = prob4iter (i - 1) b (a + b)
 -- Числа n и k положительны и не превосходят 10^8.
 -- Число 1 не считается простым числом
 prob5 :: Integer -> Integer -> Bool
-prob5 n k = all (< k) (primeDivisors n)
+prob5 n k = all (< k) (primeFactors n) 
+        where 
+            factorize :: Integer -> Integer -> [Integer]
+            factorize _ 1 = [] 
+            factorize d n 
+                | d * d > n = [n]
+                | n `mod` d == 0 = d : factorize d (n `div` d)
+                | otherwise = factorize (d + 1) n
+            primeFactors :: Integer -> [Integer]
+            primeFactors = factorize 2
