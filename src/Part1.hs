@@ -91,5 +91,4 @@ prob4iter i a b = prob4iter (i - 1) b (a + b)
 -- Числа n и k положительны и не превосходят 10^8.
 -- Число 1 не считается простым числом
 prob5 :: Integer -> Integer -> Bool
-prob5 :: Integer -> Integer -> Bool
 prob5 n k = all (< k) (primeDivisors n)
