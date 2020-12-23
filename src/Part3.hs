@@ -1,5 +1,6 @@
 module Part3 where
 
+import Data.List (group, nub, sort, find)
 ------------------------------------------------------------
 -- PROBLEM #18
 --
