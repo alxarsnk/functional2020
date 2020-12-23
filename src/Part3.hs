@@ -5,7 +5,14 @@ module Part3 where
 --
 -- Проверить, является ли число N простым (1 <= N <= 10^9)
 prob18 :: Integer -> Bool
-prob18 = error "Implement me!"
+prob18 1 = False
+prob18 m = isPrime m 2
+  where
+    isPrime :: Integer -> Integer -> Bool
+    isPrime m i
+      | i * i > m = True
+      | m `rem` i == 0 = False
+      | otherwise = isPrime m (i + 1)
 
 ------------------------------------------------------------
 -- PROBLEM #19
@@ -23,7 +30,22 @@ prob19 = error "Implement me!"
 -- Совершенное число равно сумме своих делителей (меньших
 -- самого числа)
 prob20 :: Integer -> Bool
-prob20 = error "Implement me!"
+prob20 a = a == sum (removeItem a (divisors a))
+
+removeItem :: Integer -> [Integer] -> [Integer]
+removeItem _ [] = []
+removeItem x (y : ys)
+  | x == y = removeItem x ys
+  | otherwise = y : removeItem x ys
+
+divisors :: Integer -> [Integer]
+divisors 1 = [1]
+divisors k =
+  k :
+  concatMap
+    (\x -> [x] ++ if k `div` x == x then [] else [k `div` x])
+    ( filter (\x -> k `mod` x == 0) $ takeWhile (\x -> x * x <= k) [2 ..])
+    ++ [1]
 
 ------------------------------------------------------------
 -- PROBLEM #21
@@ -31,7 +53,15 @@ prob20 = error "Implement me!"
 -- Вернуть список всех делителей числа N (1<=N<=10^10) в
 -- порядке возрастания
 prob21 :: Integer -> [Integer]
-prob21 = error "Implement me!"
+prob21 n = quicksort (divisors n)
+
+quicksort :: Ord a => [a] -> [a]
+quicksort [] = []
+quicksort (p : xs) = (quicksort lesser) ++ [p] ++ (quicksort greater)
+  where
+    lesser = filter (< p) xs
+    greater = filter (>= p) xs
+
 
 ------------------------------------------------------------
 -- PROBLEM #22
@@ -39,7 +69,10 @@ prob21 = error "Implement me!"
 -- Подсчитать произведение количеств букв i в словах из
 -- заданной строки (списка символов)
 prob22 :: String -> Integer
-prob22 = error "Implement me!"
+prob22 str = product $ (map iCount) (words str)
+  where
+    iCount :: String -> Integer
+    iCount xs = toInteger (length (filter (== 'i') xs))
 
 ------------------------------------------------------------
 -- PROBLEM #23
@@ -59,7 +92,9 @@ prob23 = error "Implement me!"
 -- представить как сумму чисел от 1 до какого-то K
 -- (1 <= N <= 10^10)
 prob24 :: Integer -> Bool
-prob24 = error "Implement me!"
+prob24 n = isPerfect (8 * n + 1)
+             where isPerfect m = r * r == m
+                     where r = floor . sqrt $ fromIntegral m
 
 ------------------------------------------------------------
 -- PROBLEM #25
@@ -67,7 +102,13 @@ prob24 = error "Implement me!"
 -- Проверить, что запись числа является палиндромом (т.е.
 -- читается одинаково слева направо и справа налево)
 prob25 :: Integer -> Bool
-prob25 = error "Implement me!"
+prob25 x = reversal x == x
+
+reversal :: Integral a => a -> a
+reversal = go 0
+  where
+    go a 0 = a
+    go a b = let (q, r) = b `quotRem` 10 in go (a * 10 + r) q
 
 ------------------------------------------------------------
 -- PROBLEM #26
@@ -76,7 +117,10 @@ prob25 = error "Implement me!"
 -- сумма делителей одного (без учёта самого числа) равна
 -- другому, и наоборот
 prob26 :: Integer -> Integer -> Bool
-prob26 = error "Implement me!"
+prob26 x y = sum (divider x) == y && sum (divider y) == x
+  where
+    divider :: Integer -> [Integer]
+    divider n = [a | a <- [1 .. (n -1)], n `rem` a == 0]
 
 ------------------------------------------------------------
 -- PROBLEM #27
@@ -101,7 +145,10 @@ prob28 = error "Implement me!"
 -- Найти наибольшее число-палиндром, которое является
 -- произведением двух K-значных (1 <= K <= 3)
 prob29 :: Int -> Int
-prob29 k = error "Implement me!"
+prob29 k = maximum [x * y |x <- [min .. max],y <- [min .. max], (prob25 . toInteger)  (x * y)]
+               where
+                   min = 10 ^ (k - 1)
+                   max = 10 ^ k - 1
 
 ------------------------------------------------------------
 -- PROBLEM #30
@@ -117,7 +164,7 @@ prob30 = error "Implement me!"
 -- Найти сумму всех пар различных дружественных чисел,
 -- меньших заданного N (1 <= N <= 10000)
 prob31 :: Int -> Int
-prob31 = error "Implement me!"
+prob31 n = sum [x + y |x <- [1 .. n],y <- [x+1 .. n], prob26 (toInteger x) (toInteger y)]
 
 ------------------------------------------------------------
 -- PROBLEM #32
