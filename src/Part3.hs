@@ -1,6 +1,5 @@
 module Part3 where
 
-import Data.List (group, nub, sort, find)
 ------------------------------------------------------------
 -- PROBLEM #18
 --
@@ -84,7 +83,14 @@ prob22 str = product $ (map iCount) (words str)
 -- M > 0 и N > 0. Если M > N, то вернуть символы из W в
 -- обратном порядке. Нумерация символов с единицы.
 prob23 :: String -> Maybe String
-prob23 = error "Implement me!"
+prob23 str = parse str
+             where
+                 parse :: String -> Maybe String
+                 parse input = do
+                     let leftN =  read $ takeWhile (/= '-') input
+                     let rightM =  read $ takeWhile (/= ':') $ tail $ dropWhile (/= '-') input
+                     let parseStr = tail $ dropWhile (/= ' ') input
+                     result leftN rightM parseStr
 
 ------------------------------------------------------------
 -- PROBLEM #24
@@ -175,12 +181,4 @@ prob31 n = sum [x + y |x <- [1 .. n],y <- [x+1 .. n], prob26 (toInteger x) (toIn
 -- указанного достоинства
 -- Сумма не превосходит 100
 prob32 :: [Int] -> Int -> [[Int]]
-prob32 coins = countChange (sort coins)
-
-countChange :: [Int] -> Int -> [[Int]]
-countChange coins 0 = [[]]
-countChange coins amount
-  | amount < 0 || null coins = []
-  | c == amount = [[c]]
-  | otherwise = countChange cs amount ++ map (\x -> x ++ [c]) (countChange coins (amount - c))
-  where (c:cs) = coins
+prob32 = error "Implement me!"
