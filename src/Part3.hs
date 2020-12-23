@@ -174,4 +174,12 @@ prob31 n = sum [x + y |x <- [1 .. n],y <- [x+1 .. n], prob26 (toInteger x) (toIn
 -- указанного достоинства
 -- Сумма не превосходит 100
 prob32 :: [Int] -> Int -> [[Int]]
-prob32 = error "Implement me!"
+prob32 coins = countChange (sort coins)
+
+countChange :: [Int] -> Int -> [[Int]]
+countChange coins 0 = [[]]
+countChange coins amount
+  | amount < 0 || null coins = []
+  | c == amount = [[c]]
+  | otherwise = countChange cs amount ++ map (\x -> x ++ [c]) (countChange coins (amount - c))
+  where (c:cs) = coins
