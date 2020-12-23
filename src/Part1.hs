@@ -25,7 +25,9 @@ prob1 x = (x * 3 + 123) `mod` 65537
 -- * нечётные числа увеличивает втрое и добавляет единицу
 -- * чётные числа делит на два
 prob2 :: Integer -> Integer
-prob2 n = error "Implement me!"
+prob2 n = if n `mod` 2 == 0
+    then n `div` 2
+    else n * 3 + 1
 
 
 ------------------------------------------------------------
@@ -50,8 +52,11 @@ prob2 n = error "Implement me!"
 --
 -- Для любой функции step и n == 1 ответом будет 0.
 prob3 :: (Integer -> Integer) -> Integer -> Integer
-prob3 step n = error "Implement me!"
-
+prob3 step n = recursive n 0
+  where
+    recursive :: Integer -> Integer -> Integer
+    recursive 1 i = i
+    recursive n i = recursive (step n) (i+1)
 
 ------------------------------------------------------------
 -- PROBLEM #4
@@ -68,8 +73,14 @@ prob3 step n = error "Implement me!"
 --
 -- Число n по модулю не превосходит 10^5
 prob4 :: Integer -> Integer
-prob4 n = error "Implement me!"
+prob4 n
+  | n == (-1) = 0
+  | n < 0 = prob4 (-n - 2) * (if even n then 1 else -1)
+  | otherwise = prob4iter n 0 1
 
+prob4iter :: Integer -> Integer -> Integer -> Integer
+prob4iter 0 a b = b
+prob4iter i a b = prob4iter (i - 1) b (a + b)
 
 ------------------------------------------------------------
 -- PROBLEM #5
@@ -80,4 +91,5 @@ prob4 n = error "Implement me!"
 -- Числа n и k положительны и не превосходят 10^8.
 -- Число 1 не считается простым числом
 prob5 :: Integer -> Integer -> Bool
-prob5 = error "Implement me!"
+prob5 :: Integer -> Integer -> Bool
+prob5 n k = all (< k) (primeDivisors n)
