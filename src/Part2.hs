@@ -187,4 +187,4 @@ buildBalanced elts =
     (elts !! half)
     (buildBalanced $ drop (half + 1) elts))
   where
-    half = length elts `quot` 2
+    half = length elts `quot` 2 
